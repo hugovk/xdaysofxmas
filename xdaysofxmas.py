@@ -16,7 +16,7 @@ python xdaysofxmas.py -d 21
 
 To generate 50k+ words of HTML for NaNoGenMo 2015:
 
-python xdaysofxmas.py -d 165 --html > xdaysofxmas.html
+python xdaysofxmas.py -d 165 --html > output/xdaysofxmas.html
 """
 from __future__ import print_function, unicode_literals
 import argparse
@@ -182,9 +182,14 @@ def partridge(days):
   <link rel="shortcut icon" type="image/ico" href="favicon.ico"/>
 </head>
 <body>
-'''.format(title))
+<div id="snowflakeContainer">
+  <p class="snowflake">*</p>
+</div>
 
-    html(title, "h1")
+<h1>{0}</h1>
+
+<h2 class="pagebreak">A generated songbook for NaNoGenMo 2015 by hugovk</h2>
+'''.format(title))
 
     for day in range(1, days+1):
         # print(day)
@@ -212,7 +217,10 @@ def partridge(days):
             html(capify(line))
 
     if args.html:
-        print("</body></html>")
+        print('''
+<script src="fallingsnow_v6.js"></script>
+</body>
+</html>''')
 
 
 if __name__ == "__main__":
