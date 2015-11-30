@@ -20,7 +20,7 @@ python xdaysofxmas.py -d 165 --html > output/xdaysofxmas.html
 """
 from __future__ import print_function, unicode_literals
 import argparse
-import inflect
+import inflect  # pip install inflect
 from random import random, shuffle
 import yaml  # pip install pyaml
 from wordnik import swagger, WordsApi  # pip install wordnik
