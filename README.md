@@ -5,7 +5,7 @@ Christmas feels like it's starting earlier and earlier every year.
 To celebrate, here are the lesser-known verses of the misnamed
 [Twelve Days of Christmas](https://en.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)) to get you in the spirit.
 
-Note every line whose day ends with a 5 is similar to everyone's favourite *five gold rings*.
+Note every line whose day ends with a 5 is similar to everyone's favourite *five gold rings*, and every ending with a 1 is something in a something.
 
 If you were to start the song so as to finish on Christmas, you'd need to start on 13th July. Or, as the original song is traditionally begun on Christmas and ends on twelfth night (5th January), then one hundred and sixty fifth night is 7th June.
 
