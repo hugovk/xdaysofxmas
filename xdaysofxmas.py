@@ -84,6 +84,14 @@ def get_random_words_from_wordnik(part_of_speech, limit):
     return random_words
 
 
+def a(noun):
+    """If noun is plural, return 'noun'. Otherwise return 'a/an noun'"""
+    if p.singular_noun(noun) is not False:
+        return noun
+    else:
+        return p.a(noun)
+
+
 def get_plural_nouns(how_many):
     nouns = get_random_words_from_wordnik("noun-plural", how_many)
 
@@ -118,6 +126,26 @@ def get_verbs(how_many):
     return verbs
 
 
+def get_pears(how_many):
+    """These are either nouns or adjectives: the pear in pear tree"""
+    pears = get_random_words_from_wordnik("noun", how_many/2)
+    pears2 = get_random_words_from_wordnik("adjective", how_many-len(pears))
+    pears.extend(pears2)
+
+    assert len(pears) == how_many
+    shuffle(pears)
+    return pears
+
+
+def get_trees(how_many):
+    """These are (ideally) singular nouns: the tree in pear tree"""
+    trees = get_random_words_from_wordnik("noun", how_many)
+
+    assert len(trees) == how_many
+    shuffle(trees)
+    return trees
+
+
 def capify(text):
     """Uppercase the first letter"""
     return text[0].upper() + text[1:]
@@ -141,21 +169,30 @@ def gerundify(verb):
 
 def giftify(day):
     """What gift for this day?"""
+    index = day - 13
     if day < 13:
         gift = GIFTS[day]
+    elif day % 10 == 1:
+        # Partridge in a pear tree
+        gift = (plural_nouns[index] + " in " +
+                a(pears.pop() + " " + trees.pop()))
     elif day % 10 == 5:
         # Five gold rings
-        index = day - 13
-        gift = adjectives.pop() + " " + nouns[index]
+        gift = adjectives.pop() + " " + plural_nouns[index]
     else:
-        index = day - 13
-        gift = nouns[index] + " " + gerundify(verbs.pop())
+        gift = plural_nouns[index] + " " + gerundify(verbs.pop())
     if day > 1:
         gift = p.number_to_words(day) + " " + gift + ","
 
-    if args.html and day % 10 == 5:
-        # Five gold rings
-        gift = "<g>" + gift + "</g>"
+    gift = capify(gift)
+
+    if args.html:
+        if day > 11 and day % 10 == 1:
+            # Partridge in a pear tree
+            gift = "<i>" + gift + "</i>"
+        elif day % 10 == 5:
+            # Five gold rings
+            gift = "<g>" + gift + "</g>"
 
     return gift
 
@@ -219,7 +256,7 @@ def partridge(days):
                     line = from_cache(day2)
             else:
                 line = from_cache(day2)
-            html(capify(line))
+            html(line)
 
     if args.html:
         print('''
@@ -236,8 +273,8 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--days', type=int, help="How many days?")
     parser.add_argument(
         '-y', '--yaml',
-        default='/Users/hugo/Dropbox/bin/data/wordnik.yaml',
-        # default='M:/bin/data/wordnik.yaml',
+        # default='/Users/hugo/Dropbox/bin/data/wordnik.yaml',
+        default='M:/bin/data/wordnik.yaml',
         help="YAML file location containing Wordnik API key")
     parser.add_argument(
         '--html', action='store_true',
@@ -257,7 +294,10 @@ if __name__ == "__main__":
         words_api = WordsApi.WordsApi(wordnik_client)
 
         how_many = args.days-12
-        nouns = get_plural_nouns(how_many)
+        plural_nouns = get_plural_nouns(how_many)
+        how_many = int(args.days * 0.1) - 1 + 1
+        pears = get_pears(how_many)
+        trees = get_trees(how_many)
         # Don't need as many verbs or adjectives
         # 9 in 10 need verbs, but 11/12 are taken care of, and one for luck
         how_many = int(args.days * 0.9) - 11 + 1
