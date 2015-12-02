@@ -36,12 +36,8 @@ p.odd, p.even, .border {
   margin: 20px;
   padding: 30px;
 }
-.meta {
-  background: #EEEEEE;
-  display: block;
-  font-family: monospace;
-  unicode-bidi: embed;
-  white-space: pre;
+g {
+  background-color: FFD700;
 }
 .even {
   background: #FFCCCC;

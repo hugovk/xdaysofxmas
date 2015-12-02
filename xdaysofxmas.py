@@ -152,6 +152,11 @@ def giftify(day):
         gift = nouns[index] + " " + gerundify(verbs.pop())
     if day > 1:
         gift = p.number_to_words(day) + " " + gift + ","
+
+    if args.html and day % 10 == 5:
+        # Five gold rings
+        gift = "<g>" + gift + "</g>"
+
     return gift
 
 
