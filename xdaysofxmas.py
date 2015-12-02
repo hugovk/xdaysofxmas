@@ -187,7 +187,7 @@ def giftify(day):
     gift = capify(gift)
 
     if args.html:
-        if day > 11 and day % 10 == 1:
+        if day != 11 and day % 10 == 1:
             # Partridge in a pear tree
             gift = "<i>" + gift + "</i>"
         elif day % 10 == 5:
@@ -251,7 +251,7 @@ def partridge(days):
         for day2 in range(day, 0, -1):
             if day2 == 1:
                 if day == 1:
-                    line = from_cache(day2)[4:]
+                    line = from_cache(day2).replace("And a", "A")
                 else:
                     line = from_cache(day2)
             else:
