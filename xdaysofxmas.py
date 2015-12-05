@@ -44,9 +44,16 @@ GIFTS = {
 
 TEMPLATE = "\nOn the {0} day of Christmas my true love sent to me:"
 
+p = inflect.engine()
+
+# Cache those lines we've already generated
+cache = {}
+
+print_html = False
+
 
 def html(text, tag="br"):
-    if args.html:
+    if print_html:
         if tag == "p":
             out = "<{0}>{1}".format(tag, text)
         elif tag == "br":
@@ -186,7 +193,7 @@ def giftify(day):
 
     gift = capify(gift)
 
-    if args.html:
+    if print_html:
         if day != 11 and day % 10 == 1:
             # Partridge in a pear tree
             gift = "<i>" + gift + "</i>"
@@ -214,7 +221,7 @@ def partridge(days):
 
     title = "The " + p.number_to_words(days).title() + " Days of Christmas"
 
-    if args.html:
+    if print_html:
         print('''
 <html>
 <head>
@@ -237,7 +244,7 @@ def partridge(days):
         # print(day)
         # html(day, "h2")
 
-        if args.html:
+        if print_html:
             print('<a href="#{0}"><h2 id="{0}">{0}</h2></a>'.format(day))
 
             if day % 2:
@@ -258,11 +265,33 @@ def partridge(days):
                 line = from_cache(day2)
             html(line)
 
-    if args.html:
+    if print_html:
         print('''
 <script src="fallingsnow_v6.js"></script>
 </body>
 </html>''')
+
+
+def init_wordnik(yaml, days):
+    global words_api, plural_nouns, pears, trees, verbs, adjectives
+
+    credentials = load_yaml(yaml)
+    wordnik_client = swagger.ApiClient(credentials['wordnik_api_key'],
+                                       'http://api.wordnik.com/v4')
+    words_api = WordsApi.WordsApi(wordnik_client)
+
+    how_many = days-12
+    plural_nouns = get_plural_nouns(how_many)
+    how_many = int(days * 0.1) - 1 + 1
+    pears = get_pears(how_many)
+    trees = get_trees(how_many)
+    # Don't need as many verbs or adjectives
+    # 9 in 10 need verbs, but 11/12 are taken care of, and one for luck
+    how_many = int(days * 0.9) - 11 + 1
+    verbs = get_verbs(how_many)
+    # 1 in 10 need adjectives, but 1/12 is taken care of, and one for luck
+    how_many = int(days * 0.1) - 1 + 1
+    adjectives = get_random_words_from_wordnik("adjective", how_many)
 
 
 if __name__ == "__main__":
@@ -273,38 +302,20 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--days', type=int, help="How many days?")
     parser.add_argument(
         '-y', '--yaml',
-        # default='/Users/hugo/Dropbox/bin/data/wordnik.yaml',
-        default='M:/bin/data/wordnik.yaml',
+        default='/Users/hugo/Dropbox/bin/data/wordnik.yaml',
+        # default='M:/bin/data/wordnik.yaml',
         help="YAML file location containing Wordnik API key")
     parser.add_argument(
         '--html', action='store_true',
         help="HTML output")
     args = parser.parse_args()
 
-    p = inflect.engine()
-
-    # Cache those lines we've already generated
-    cache = {}
+    if args.html:
+        print_html = True
 
     if args.days > 12:
         # Going to need some random words
-        credentials = load_yaml(args.yaml)
-        wordnik_client = swagger.ApiClient(credentials['wordnik_api_key'],
-                                           'http://api.wordnik.com/v4')
-        words_api = WordsApi.WordsApi(wordnik_client)
-
-        how_many = args.days-12
-        plural_nouns = get_plural_nouns(how_many)
-        how_many = int(args.days * 0.1) - 1 + 1
-        pears = get_pears(how_many)
-        trees = get_trees(how_many)
-        # Don't need as many verbs or adjectives
-        # 9 in 10 need verbs, but 11/12 are taken care of, and one for luck
-        how_many = int(args.days * 0.9) - 11 + 1
-        verbs = get_verbs(how_many)
-        # 1 in 10 need adjectives, but 1/12 is taken care of, and one for luck
-        how_many = int(args.days * 0.1) - 1 + 1
-        adjectives = get_random_words_from_wordnik("adjective", how_many)
+        init_wordnik(args.yaml, args.days)
 
     partridge(args.days)
 
