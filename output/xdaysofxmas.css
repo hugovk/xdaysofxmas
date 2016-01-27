@@ -30,6 +30,9 @@ a, a:visited, a:hover, a:active {
   cursor: pointer;
   text-decoration: none;
 }
+x {
+  font-weight: normal;
+}
 p.odd, p.even, .border {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
