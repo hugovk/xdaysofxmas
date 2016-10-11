@@ -9,7 +9,7 @@ import datetime
 import sys
 import twitter  # pip install twitter
 import webbrowser
-import yaml  # pip install pyaml
+import yaml  # pip install pyyaml
 from wordnik import swagger, WordsApi  # pip install wordnik
 
 import xdaysofxmas

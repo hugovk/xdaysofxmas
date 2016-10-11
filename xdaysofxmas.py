@@ -22,7 +22,7 @@ from __future__ import print_function, unicode_literals
 import argparse
 import inflect  # pip install inflect
 from random import random, shuffle
-import yaml  # pip install pyaml
+import yaml  # pip install pyyaml
 from wordnik import swagger, WordsApi  # pip install wordnik
 
 # from pprint import pprint
