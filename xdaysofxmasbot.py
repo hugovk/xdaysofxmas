@@ -3,8 +3,6 @@
 """
 On the Xth day of Christmas @MyTruLuvSent2Me
 """
-from __future__ import print_function
-
 import argparse
 import datetime
 import sys
@@ -17,11 +15,6 @@ from wordnik import WordsApi, swagger  # pip install wordnik
 import xdaysofxmas
 
 # from pprint import pprint
-
-
-# cmd.exe cannot do Unicode so encode first
-def print_it(text):
-    print(text.encode("utf-8"))
 
 
 def timestamp():
@@ -40,8 +33,7 @@ def load_yaml(filename):
     """
     with open(filename) as f:
         data = yaml.safe_load(f)
-    keys = data.viewkeys() if sys.version_info.major == 2 else data.keys()
-    if not keys >= {
+    if not data.keys() >= {
         "access_token",
         "access_token_secret",
         "consumer_key",
@@ -67,7 +59,7 @@ def tweet_it(string, credentials, image=None):
     )
     t = twitter.Twitter(auth=auth)
 
-    print_it("TWEETING THIS:\n" + string)
+    print("TWEETING THIS:\n" + string)
 
     if args.test:
         print("(Test mode, not actually tweeting)")

@@ -18,8 +18,6 @@ To generate 50k+ words of HTML for NaNoGenMo 2015:
 
 python xdaysofxmas.py -d 165 --html > output/xdaysofxmas.html
 """
-from __future__ import print_function, unicode_literals
-
 import argparse
 import sys
 from random import random, shuffle
@@ -75,8 +73,7 @@ def load_yaml(filename):
     """
     with open(filename) as f:
         data = yaml.safe_load(f)
-    keys = data.viewkeys() if sys.version_info.major == 2 else data.keys()
-    if not keys >= {"wordnik_api_key"}:
+    if not data.keys() >= {"wordnik_api_key"}:
         sys.exit("Wordnik credentials missing from YAML: " + filename)
     return data
 
