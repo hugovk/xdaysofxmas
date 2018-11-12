@@ -4,13 +4,15 @@
 On the Xth day of Christmas @MyTruLuvSent2Me
 """
 from __future__ import print_function
+
 import argparse
 import datetime
 import sys
-import twitter  # pip install twitter
 import webbrowser
+
+import twitter  # pip install twitter
 import yaml  # pip install pyyaml
-from wordnik import swagger, WordsApi  # pip install wordnik
+from wordnik import WordsApi, swagger  # pip install wordnik
 
 import xdaysofxmas
 

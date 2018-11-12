@@ -6,9 +6,11 @@ Makes an audiobook of The One Hundred And Sixty-Five Days of Christmas.
 Requires OS X's say command, also sox and ffmpeg.
 """
 from __future__ import print_function, unicode_literals
-import inflect  # pip install inflect
-from random import choice
+
 import os
+from random import choice
+
+import inflect  # pip install inflect
 
 VOICES = [
     "Agnes",

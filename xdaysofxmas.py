@@ -19,11 +19,14 @@ To generate 50k+ words of HTML for NaNoGenMo 2015:
 python xdaysofxmas.py -d 165 --html > output/xdaysofxmas.html
 """
 from __future__ import print_function, unicode_literals
+
 import argparse
-import inflect  # pip install inflect
+import sys
 from random import random, shuffle
+
+import inflect  # pip install inflect
 import yaml  # pip install pyyaml
-from wordnik import swagger, WordsApi  # pip install wordnik
+from wordnik import WordsApi, swagger  # pip install wordnik
 
 # from pprint import pprint
 
