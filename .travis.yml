@@ -15,6 +15,14 @@ matrix:
     - python: 3.4
     - python: 2.7
 
+# Whitelist
+# gh-pages is otherwise ignored by Travis CI
+# Use a regex to whitelist gh-pages and all branches
+branches:
+  only:
+    - gh-pages
+    - /.*/
+
 install:
  - pip install -U pip
  - pip install -U flake8
