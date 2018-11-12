@@ -77,7 +77,7 @@ VOICES = [
     "Zarvox",
     "Zosia",
     "Zuzana",
-    ]
+]
 
 LINES = [
     "One hundred and sixty-five browner Manirul,",
@@ -245,7 +245,7 @@ LINES = [
     "Three French hens,",
     "Two turtle doves,",
     "And a partridge in a pear tree.",
-    ]
+]
 
 
 print(len(LINES))
@@ -253,7 +253,7 @@ print(len(LINES))
 
 def run(cmd):
     print(cmd)
-    os.system(cmd.encode('utf-8'))
+    os.system(cmd.encode("utf-8"))
 
 
 # First gen audio lines
@@ -269,31 +269,30 @@ for i, line in enumerate(reversed(LINES)):
 
     # Intro
     txt = "On the {} day of Christmas my true love sent to me".format(
-        p.ordinal(p.number_to_words(i+1))
+        p.ordinal(p.number_to_words(i + 1))
     )
-    cmd = 'say -v {} "{}" -o intro-{:03d}.aiff'.format(voice, txt, i+1)
+    cmd = 'say -v {} "{}" -o intro-{:03d}.aiff'.format(voice, txt, i + 1)
     run(cmd)
 
-    cmd = 'say -v {} "{}" -o line-{:03d}.aiff'.format(voice, line, i+1)
+    cmd = 'say -v {} "{}" -o line-{:03d}.aiff'.format(voice, line, i + 1)
     run(cmd)
 
     # Special case for first day
     if i == 0:
         line = line.replace("And a", "A")
-        cmd = 'say -v "{}" "{}" -o line-{:03d}-first.aiff'.format(
-            voice, line, i+1)
+        cmd = 'say -v "{}" "{}" -o line-{:03d}-first.aiff'.format(voice, line, i + 1)
         run(cmd)
 
 
 # Next assemble
 
-for i in range(len(LINES)-1, -1, -1):
+for i in range(len(LINES) - 1, -1, -1):
     print(i)
-    input = "intro-{:03d}.aiff".format(i+1)
+    input = "intro-{:03d}.aiff".format(i + 1)
     for j in range(i, -1, -1):
-        input += " line-{:03d}.aiff".format(j+1)
+        input += " line-{:03d}.aiff".format(j + 1)
 
-    output = "verse-{:03d}.aiff".format(i+1)
+    output = "verse-{:03d}.aiff".format(i + 1)
 
     # Special case for first day
     if i == 0:
@@ -307,11 +306,11 @@ for i in range(len(LINES)-1, -1, -1):
     run(cmd)
 
     # Remove some old aiffs
-    cmd = "rm intro-{0:03d}.aiff line-{0:03d}.aiff ".format(i+1)
+    cmd = "rm intro-{0:03d}.aiff line-{0:03d}.aiff ".format(i + 1)
     run(cmd)
 
     # Compress to mp3
-    input = "verse-{:03d}.aiff".format(i+1)
+    input = "verse-{:03d}.aiff".format(i + 1)
     output = input.replace(".aiff", ".mp3")
     cmd = f"ffmpeg -i {input} {output}"
     run(cmd)
@@ -323,7 +322,7 @@ run(cmd)
 # Make one big, final audiobook
 input = ""
 for i in range(len(LINES)):
-    input += " verse-{:03d}.aiff".format(i+1)
+    input += " verse-{:03d}.aiff".format(i + 1)
 output = "audiobook.aiff"
 cmd = f"sox {input} {output}"
 run(cmd)

@@ -65,7 +65,7 @@ def html(text, tag="br"):
             out = "<{0}>{1}</{0}>".format(tag, text)
     else:
         out = text
-    print(out.encode('utf-8'))
+    print(out.encode("utf-8"))
 
 
 def load_yaml(filename):
@@ -76,16 +76,14 @@ def load_yaml(filename):
     f = open(filename)
     data = yaml.safe_load(f)
     f.close()
-    if not data.viewkeys() >= {
-            'wordnik_api_key'}:
+    if not data.viewkeys() >= {"wordnik_api_key"}:
         sys.exit("Wordnik credentials missing from YAML: " + filename)
     return data
 
 
 def get_random_words_from_wordnik(part_of_speech, limit):
     """ Get random words from Wordnik"""
-    words = words_api.getRandomWords(includePartOfSpeech=part_of_speech,
-                                     limit=limit)
+    words = words_api.getRandomWords(includePartOfSpeech=part_of_speech, limit=limit)
 
     random_words = []
     for word in words:
@@ -127,8 +125,7 @@ def get_verbs(how_many):
     # If not enough verb-intransitive, top off with verb-transitive
     if len(verbs) < how_many:
         how_many_more = how_many - len(verbs)
-        more_verbs = get_random_words_from_wordnik("verb-transitive",
-                                                   how_many_more)
+        more_verbs = get_random_words_from_wordnik("verb-transitive", how_many_more)
         verbs.extend(more_verbs)
 
     assert len(verbs) == how_many
@@ -138,8 +135,8 @@ def get_verbs(how_many):
 
 def get_pears(how_many):
     """These are either nouns or adjectives: the pear in pear tree"""
-    pears = get_random_words_from_wordnik("noun", how_many/2)
-    pears2 = get_random_words_from_wordnik("adjective", how_many-len(pears))
+    pears = get_random_words_from_wordnik("noun", how_many / 2)
+    pears2 = get_random_words_from_wordnik("adjective", how_many - len(pears))
     pears.extend(pears2)
 
     assert len(pears) == how_many
@@ -167,11 +164,13 @@ def gerundify(verb):
         verb = verb[:-1]
 
     if random() < 0.4:
-        if not verb.startswith("a") and \
-           not verb.startswith("e") and \
-           not verb.startswith("i") and \
-           not verb.startswith("o") and \
-           not verb.startswith("u"):
+        if (
+            not verb.startswith("a")
+            and not verb.startswith("e")
+            and not verb.startswith("i")
+            and not verb.startswith("o")
+            and not verb.startswith("u")
+        ):
             verb = "a-" + verb
 
     return verb + "ing"
@@ -184,8 +183,7 @@ def giftify(day):
         gift = GIFTS[day]
     elif day % 10 == 1:
         # Partridge in a pear tree
-        gift = (plural_nouns[index] + " in " +
-                a(pears.pop() + " " + trees.pop()))
+        gift = plural_nouns[index] + " in " + a(pears.pop() + " " + trees.pop())
     elif day % 10 == 5:
         # Five gold rings
         gift = adjectives.pop() + " " + plural_nouns[index]
@@ -225,7 +223,8 @@ def partridge(days):
     title = "The " + p.number_to_words(days).title() + " Days of Christmas"
 
     if print_html:
-        print('''
+        print(
+            """
 <html>
 <head>
   <meta charset="utf-8" />
@@ -241,9 +240,12 @@ def partridge(days):
 <h1>{0}</h1>
 
 <h2 class="pagebreak">A generated songbook for NaNoGenMo 2015 by hugovk</h2>
-'''.format(title))
+""".format(
+                title
+            )
+        )
 
-    for day in range(1, days+1):
+    for day in range(1, days + 1):
         # print(day)
         # html(day, "h2")
 
@@ -269,21 +271,24 @@ def partridge(days):
             html(line)
 
     if print_html:
-        print('''
+        print(
+            """
 <script src="fallingsnow_v6.js"></script>
 </body>
-</html>''')
+</html>"""
+        )
 
 
 def init_wordnik(yaml, days):
     global words_api, plural_nouns, pears, trees, verbs, adjectives
 
     credentials = load_yaml(yaml)
-    wordnik_client = swagger.ApiClient(credentials['wordnik_api_key'],
-                                       'http://api.wordnik.com/v4')
+    wordnik_client = swagger.ApiClient(
+        credentials["wordnik_api_key"], "http://api.wordnik.com/v4"
+    )
     words_api = WordsApi.WordsApi(wordnik_client)
 
-    how_many = days-12
+    how_many = days - 12
     plural_nouns = get_plural_nouns(how_many)
     how_many = int(days * 0.1) - 1 + 1
     pears = get_pears(how_many)
@@ -300,17 +305,18 @@ def init_wordnik(yaml, days):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate the lesser-known verses of the misnamed "
-                    "Twelve Days of Christmas.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-d', '--days', type=int, help="How many days?")
+        "Twelve Days of Christmas.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("-d", "--days", type=int, help="How many days?")
     parser.add_argument(
-        '-y', '--yaml',
-        default='/Users/hugo/Dropbox/bin/data/wordnik.yaml',
+        "-y",
+        "--yaml",
+        default="/Users/hugo/Dropbox/bin/data/wordnik.yaml",
         # default='M:/bin/data/wordnik.yaml',
-        help="YAML file location containing Wordnik API key")
-    parser.add_argument(
-        '--html', action='store_true',
-        help="HTML output")
+        help="YAML file location containing Wordnik API key",
+    )
+    parser.add_argument("--html", action="store_true", help="HTML output")
     args = parser.parse_args()
 
     if args.html:
