@@ -143,9 +143,9 @@ def screen_name(day):
     # Your real name can be 20 characters long.
     while True:
         xth = xdaysofxmas.p.ordinal(day)
-        name = "OnThe{0}DayOfXmas".format(xth)
+        name = "OnThe{}DayOfXmas".format(xth)
         if len(name) > 20:
-            name = "OnThe{0}DayOfXmas".format(day)
+            name = "OnThe{}DayOfXmas".format(day)
         elif len(name) <= 20:
             break
     return name

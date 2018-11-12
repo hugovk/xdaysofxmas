@@ -268,19 +268,19 @@ for i, line in enumerate(reversed(LINES)):
     last_voice = voice
 
     # Intro
-    txt = "On the {0} day of Christmas my true love sent to me".format(
+    txt = "On the {} day of Christmas my true love sent to me".format(
         p.ordinal(p.number_to_words(i+1))
     )
-    cmd = 'say -v {0} "{1}" -o intro-{2:03d}.aiff'.format(voice, txt, i+1)
+    cmd = 'say -v {} "{}" -o intro-{:03d}.aiff'.format(voice, txt, i+1)
     run(cmd)
 
-    cmd = 'say -v {0} "{1}" -o line-{2:03d}.aiff'.format(voice, line, i+1)
+    cmd = 'say -v {} "{}" -o line-{:03d}.aiff'.format(voice, line, i+1)
     run(cmd)
 
     # Special case for first day
     if i == 0:
         line = line.replace("And a", "A")
-        cmd = 'say -v "{0}" "{1}" -o line-{2:03d}-first.aiff'.format(
+        cmd = 'say -v "{}" "{}" -o line-{:03d}-first.aiff'.format(
             voice, line, i+1)
         run(cmd)
 
@@ -289,11 +289,11 @@ for i, line in enumerate(reversed(LINES)):
 
 for i in range(len(LINES)-1, -1, -1):
     print(i)
-    input = "intro-{0:03d}.aiff".format(i+1)
+    input = "intro-{:03d}.aiff".format(i+1)
     for j in range(i, -1, -1):
-        input += " line-{0:03d}.aiff".format(j+1)
+        input += " line-{:03d}.aiff".format(j+1)
 
-    output = "verse-{0:03d}.aiff".format(i+1)
+    output = "verse-{:03d}.aiff".format(i+1)
 
     # Special case for first day
     if i == 0:
@@ -303,7 +303,7 @@ for i in range(len(LINES)-1, -1, -1):
         print(input)
 
     # Join 'em
-    cmd = "sox {0} {1}".format(input, output)
+    cmd = "sox {} {}".format(input, output)
     run(cmd)
 
     # Remove some old aiffs
@@ -311,9 +311,9 @@ for i in range(len(LINES)-1, -1, -1):
     run(cmd)
 
     # Compress to mp3
-    input = "verse-{0:03d}.aiff".format(i+1)
+    input = "verse-{:03d}.aiff".format(i+1)
     output = input.replace(".aiff", ".mp3")
-    cmd = "ffmpeg -i {0} {1}".format(input, output)
+    cmd = "ffmpeg -i {} {}".format(input, output)
     run(cmd)
 
 # Delete some old aiffs
@@ -323,9 +323,9 @@ run(cmd)
 # Make one big, final audiobook
 input = ""
 for i in range(len(LINES)):
-    input += " verse-{0:03d}.aiff".format(i+1)
+    input += " verse-{:03d}.aiff".format(i+1)
 output = "audiobook.aiff"
-cmd = "sox {0} {1}".format(input, output)
+cmd = "sox {} {}".format(input, output)
 run(cmd)
 cmd = "ffmpeg -i audiobook.aiff audiobook.mp3"
 run(cmd)
