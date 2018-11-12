@@ -73,10 +73,10 @@ def load_yaml(filename):
     File should contain:
     wordnik_api_key: TODO_ENTER_YOURS
     """
-    f = open(filename)
-    data = yaml.safe_load(f)
-    f.close()
-    if not data.viewkeys() >= {"wordnik_api_key"}:
+    with open(filename) as f:
+        data = yaml.safe_load(f)
+    keys = data.viewkeys() if sys.version_info.major == 2 else data.keys()
+    if not keys >= {"wordnik_api_key"}:
         sys.exit("Wordnik credentials missing from YAML: " + filename)
     return data
 
@@ -277,6 +277,8 @@ def partridge(days):
 </body>
 </html>"""
         )
+
+    return from_cache(days)
 
 
 def init_wordnik(yaml, days):
