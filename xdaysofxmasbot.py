@@ -220,6 +220,13 @@ if __name__ == "__main__":
         )
         xdaysofxmas.words_api = WordsApi.WordsApi(wordnik_client)
 
+    if args.test:
+        # Mock Wordnik
+        def mock_get_random_words_from_wordnik(*args):
+            return ["bleep"]
+
+        xdaysofxmas.get_random_words_from_wordnik = mock_get_random_words_from_wordnik
+
     screen_name = screen_name(day)
     tweet = giftify(day)
     print(screen_name)
