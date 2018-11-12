@@ -303,7 +303,7 @@ for i in range(len(LINES)-1, -1, -1):
         print(input)
 
     # Join 'em
-    cmd = "sox {} {}".format(input, output)
+    cmd = f"sox {input} {output}"
     run(cmd)
 
     # Remove some old aiffs
@@ -313,7 +313,7 @@ for i in range(len(LINES)-1, -1, -1):
     # Compress to mp3
     input = "verse-{:03d}.aiff".format(i+1)
     output = input.replace(".aiff", ".mp3")
-    cmd = "ffmpeg -i {} {}".format(input, output)
+    cmd = f"ffmpeg -i {input} {output}"
     run(cmd)
 
 # Delete some old aiffs
@@ -325,7 +325,7 @@ input = ""
 for i in range(len(LINES)):
     input += " verse-{:03d}.aiff".format(i+1)
 output = "audiobook.aiff"
-cmd = "sox {} {}".format(input, output)
+cmd = f"sox {input} {output}"
 run(cmd)
 cmd = "ffmpeg -i audiobook.aiff audiobook.mp3"
 run(cmd)

@@ -58,9 +58,9 @@ print_html = False
 def html(text, tag="br"):
     if print_html:
         if tag == "p":
-            out = "<{}>{}".format(tag, text)
+            out = f"<{tag}>{text}"
         elif tag == "br":
-            out = "{1}<{0}>".format(tag, text)
+            out = f"{text}<{tag}>"
         else:
             out = "<{0}>{1}</{0}>".format(tag, text)
     else:
@@ -254,7 +254,7 @@ def partridge(days):
                 odd_even = "even"
             else:
                 odd_even = "odd"
-            para = '<P class="{}">'.format(odd_even)
+            para = f'<P class="{odd_even}">'
             print(para)
 
         html(TEMPLATE.format(p.ordinal(p.number_to_words(day))), "br")

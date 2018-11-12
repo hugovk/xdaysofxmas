@@ -11,9 +11,6 @@ matrix:
       dist: xenial
       sudo: required
     - python: 3.6
-    - python: 3.5
-    - python: 3.4
-    - python: 2.7
 
 # Whitelist
 # gh-pages is otherwise ignored by Travis CI
@@ -25,10 +22,9 @@ branches:
 
 install:
  - pip install -U pip
- - pip install -U flake8
- - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install -U black; fi
+ - pip install -U black flake8
 
 script:
  # Static analysis
  - flake8 --statistics --count
- - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then black --check --diff .; fi
+ - black --check --diff .
