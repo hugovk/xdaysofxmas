@@ -10,7 +10,7 @@ import webbrowser
 
 import twitter  # pip install twitter
 import yaml  # pip install pyyaml
-from wordnik import WordsApi, swagger  # pip install wordnik
+from wordnik import WordsApi, swagger  # pip install wordnik-py3
 
 import xdaysofxmas
 

@@ -24,7 +24,7 @@ from random import random, shuffle
 
 import inflect  # pip install inflect
 import yaml  # pip install pyyaml
-from wordnik import WordsApi, swagger  # pip install wordnik
+from wordnik import WordsApi, swagger  # pip install wordnik-py3
 
 # from pprint import pprint
 
